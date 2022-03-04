@@ -143,7 +143,7 @@ export const protect = async (req , res , next) => {
      
     } catch (e) {
         console.error(e);
-        res.redirect('/');
+        res.redirect('/signin');
      
  }
  
