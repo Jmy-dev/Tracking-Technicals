@@ -65,34 +65,14 @@ export const signup = async (req , res) => {
 
 export const signin = async (req , res) => {
     
-    const {errors , isValid} = validateLoginInput(req.body);
+    const {errors , isValid} = await validateLoginInput(req.body);
 
     if(!isValid) {
         return res.status(400).json({errors})
     }
-    
-    if( !req.body.email || !req.body.password){
-         return res.status(400).send({message:"email and password are required!"})
-    }
-
-    const user = await User.findOne({email:req.body.email})
-    .exec()
-    
-
-    if(!user) {
-         return res.status(400).json({error: "You have to register first in order to signin"})
-    }
 
     try {
-        console.log(user)
-
-        const match = await user.checkPassword(req.body.password);
-
-
-        if (!match) {
-            return res.status(401).send({message: "Incorrect Password!"})
-        }
-
+        
         const token = newToken(user);
 
         if(!token) {
