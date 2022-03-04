@@ -99,7 +99,7 @@ export const signin = async (req , res) => {
             return res.status(400).end();
         }
 
-        return res.status(201).json({data:token})
+        return res.status(201).json({token})
 
 
 
@@ -125,9 +125,7 @@ export const protect = async (req , res , next) => {
     try {
         const payload = await verifyToken(token);
 
-        if(!payload) {
-            res.redirect('/signin');
-            
+        if(!payload) {            
             return res.status(401).json({error:"Not authorized"});
         }
 
@@ -143,8 +141,7 @@ export const protect = async (req , res , next) => {
      
     } catch (e) {
         console.error(e);
-        res.redirect('/signin');
-     
+        res.status(400).json({error: e})     
  }
  
 
