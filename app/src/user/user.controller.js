@@ -83,6 +83,7 @@ export const deleteUser = async (req , res) => {
 export const getAllTechnicals = async (req , res) => {
     try {
         const allTechnicals = await User.find({isAdmin: false})
+        .select('-password')
         .lean()
         .exec()
 
