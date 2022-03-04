@@ -6,6 +6,7 @@ import {config} from './config/dev'
 import {json , urlencoded} from 'body-parser'
 import userRouter from './src/user/user.router'
 import { signin , signup , protect } from './utils/auth'
+import taskRouter from './src/task/task.router'
 
 // app setup
 const app = express();
@@ -28,6 +29,7 @@ app.post('/signup' , signup)
 app.post('/signin' , signin)
 app.use('/api' , protect)
 app.use('/api/user' , userRouter)
+app.use('/api/task' , taskRouter)
 
 
 mongoose.connect(config.secrets.dbConnection , {useNewUrlParser:true , useUnifiedTopology: true })

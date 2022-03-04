@@ -1,8 +1,9 @@
 import Validator from "validator"
 import isEmpty from'./isEmpty'
+import { User } from "../src/user/user.model";
 
 
-export const validateRegisterInput = (data) => {
+export const validateRegisterInput =  async (data) => {
 
     let errors = {};
 
@@ -11,6 +12,22 @@ export const validateRegisterInput = (data) => {
     data.email = !isEmpty(data.email)    ? data.email : '' ;
     data.password = !isEmpty(data.password)    ? data.password : '' ;
     data.password2 = !isEmpty(data.password2)    ? data.password2 : '' ;
+
+
+    const existEmail= await User.findOne({email: data.email})
+    .lean()
+    .exec()
+
+    const existName = await User.findOne({name: data.name})
+    .lean()
+    .exec()
+
+    if(existEmail) {
+        errors.email = "Email is already exist";
+    }
+    if(existName) {
+        errors.name = "Name is already exist";
+    }
 
 
     if(!Validator.isLength(data.name , {min: 3 , max: 30})){

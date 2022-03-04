@@ -14,13 +14,14 @@ export const validateLoginInput = async  (data)=> {
     const existUser = await User.findOne({email:data.email})
     .exec()
 
-    
-
-    const match =  await existUser.checkPassword(data.password)
-   
-
     if(!existUser){
       errors.email = "You have to register first in order to signin!"
+    }
+    else{
+      const match =  await existUser.checkPassword(data.password)
+      if(!match) {
+        errors.password = "incorrect password!"
+      }
     }
 
     if(!Validator.isEmail(data.email)){
@@ -29,9 +30,7 @@ export const validateLoginInput = async  (data)=> {
       if(Validator.isEmpty(data.email)){
         errors.email = 'Email field is required' ;
       }
-      if(!match) {
-        errors.password = "incorrect password!"
-      }
+     
       if(Validator.isEmpty(data.password)){
         errors.password = 'Password field is required'
       }
