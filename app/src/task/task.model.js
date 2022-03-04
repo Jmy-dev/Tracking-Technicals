@@ -37,6 +37,9 @@ const taskSchema = new mongoose.Schema({
    } ,
    duration:{
        type: String
+   } ,
+   category:{
+       type:String
    }
         
 }, {timestamps:true})

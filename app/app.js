@@ -1,5 +1,7 @@
 import express from 'express'
 import mongoose from 'mongoose'
+import morgan from 'morgan'
+import cors from 'cors'
 import {config} from './config/dev'
 import {json , urlencoded} from 'body-parser'
 import userRouter from './src/user/user.router'
@@ -11,9 +13,10 @@ const PORT = process.env.PORT || 3000 ;
 
 
 //body-parser setup
-
+app.use(cors())
 app.use(urlencoded({extended:true}))
 app.use(json())
+app.use(morgan('dev'))
 
 
 //routes

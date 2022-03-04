@@ -86,8 +86,8 @@ export const getAllTechnicals = async (req , res) => {
         .lean()
         .exec()
 
-        if(!allTechnicals) {
-            return res.status(400).json({error: "There is no technicals! "});
+        if(allTechnicals.length === 0) {
+            return res.status(200).json({message: "There is no technicals! "});
         }
         
         return res.status(200).json({data: allTechnicals});

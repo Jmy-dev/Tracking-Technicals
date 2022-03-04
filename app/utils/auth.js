@@ -99,7 +99,7 @@ export const signin = async (req , res) => {
             return res.status(400).end();
         }
 
-        return res.status(201).json({token})
+        return res.status(201).json({data:token})
 
 
 
@@ -115,7 +115,7 @@ export const protect = async (req , res , next) => {
 
     console.log(req.headers.authorization)
     if(!req.headers.authorization) {
-        return res.status(400).end();
+        return res.status(401).json({error:"Not authorized!"});
     }
 
     let token = req.headers.authorization.split('Bearer ')[1];  
