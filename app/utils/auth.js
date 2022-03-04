@@ -113,7 +113,6 @@ export const signin = async (req , res) => {
 
 export const protect = async (req , res , next) => {
 
-    console.log(req.headers.authorization)
     if(!req.headers.authorization) {
         return res.status(401).json({error:"Not authorized!"});
     }
@@ -125,7 +124,12 @@ export const protect = async (req , res , next) => {
     }
     try {
         const payload = await verifyToken(token);
-        console.log(payload);
+
+        if(!payload) {
+            res.redirect('/signin');
+            
+            return res.status(401).json({error:"Not authorized"});
+        }
 
         const user = await User.findById(payload.id)
         .select('-password')
@@ -139,7 +143,7 @@ export const protect = async (req , res , next) => {
      
     } catch (e) {
         console.error(e);
-        res.status(400).end();
+        res.redirect('/');
      
  }
  
