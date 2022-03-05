@@ -10,18 +10,18 @@ const taskSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId ,
         ref:'user'
     } ,
-    customerdata:{
-       location :{
-           type:String 
+    
+    location :{
+      type:String 
             
-        } ,
-        customerName:{
-            type:String 
-        } ,
-        customerPhonenumber:{
-            type:String
-        } 
     } ,
+    customerName:{
+        type:String 
+    } ,
+    customerPhonenumber:{
+        type:String
+    } 
+     ,
     report:{
         type:String
     },
@@ -32,8 +32,13 @@ const taskSchema = new mongoose.Schema({
        type:Boolean ,
        default: false
    } ,
-   date:{
-       type: Date
+   startDate:{
+       type: Date ,
+       required: true
+   } ,
+   endDate:{
+      type:Date ,
+      required: true
    } ,
    duration:{
        type: String

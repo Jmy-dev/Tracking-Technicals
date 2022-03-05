@@ -31,6 +31,15 @@ export const updateUser = async (req , res) =>{
         //EXECUTER 
         const executer = req.user.id;
 
+
+        if(req.body.email || req.body.name ) {
+            return res.status(400).end()
+        }
+
+        if(req.body.isAdmin && !req.user.isAdmin) {
+            return res.status(400).end()
+        }
+
         
      if(req.user.isAdmin  || (executer === ownerId)) {
         
@@ -69,14 +78,14 @@ export const deleteUser = async (req , res) => {
             if(!deletedUser){
                  return res.status(400).end();
             }
-            return res.status(200).json({data: deletedUser})
+            return res.status(200).json({message: "deleted"})
         }
         else {
            return res.status(401).json({errors: "You aren't authorized to perform this action"})
         }
         
     } catch (e) {
-        res.status(400).json({error :e}).end()
+        res.status(400).end()
     }
 }
 
@@ -99,6 +108,28 @@ export const getAllTechnicals = async (req , res) => {
 
 }
 
+
+export const getTechnicalsByCategory = async (req , res) => {
+
+    try {
+        
+    
+    const users = await User.find({category:req.params.name}) 
+    .lean()
+    .exec()
+
+    if(users) {
+        return res.status(200).json({users});
+    }
+
+    res.status(400).end()
+
+   } 
+    catch (e) {
+        console.error(e);
+        res.status(400).end();
+    }
+}
 
 
 

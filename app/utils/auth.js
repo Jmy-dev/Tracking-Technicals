@@ -62,8 +62,6 @@ export const signin = async (req , res) => {
         const user = await User.findOne({email: req.body.email})
         .exec()
 
-        console.log(user)
-
         const token = newToken(user);
 
         if(!token) {
@@ -91,7 +89,6 @@ export const protect = async (req , res , next) => {
 
     let token = req.headers.authorization.split('Bearer ')[1];  
 
-    console.log("token" , token)
     
     if(!token){
         return res.status(400).end();
@@ -102,7 +99,6 @@ export const protect = async (req , res , next) => {
         if(!payload) {            
             return res.status(401).json({error:"Not authorized"});
         }
-        console.log("payload here",payload)
 
         const user = await User.findById(payload.id)
         .select('-password')
@@ -116,7 +112,7 @@ export const protect = async (req , res , next) => {
      
     } catch (e) {
         console.error(e);
-        res.status(400).json({error: e})     
+        res.status(400).json({error: "Not Authorized"})     
  }
  
 

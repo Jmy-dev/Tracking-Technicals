@@ -1,8 +1,16 @@
 import {Task} from './task.model'
+import {validateTaskInput} from '../../validation/task';
 
 
 
 export const createTask = async (req , res) => {
+   
+    const {isValid , errors} =  validateTaskInput(req.body);
+
+    if(!isValid) {
+        return res.status(400).json({errors})
+    }
+
     const task = await Task.create(req.body)
     if(task) {
         return res.status(201).json({data: task})
@@ -39,7 +47,9 @@ export const deleteTask = async (req , res) => {
 }
 
 export const getTask = async (req , res) =>{
-    const task = await Task.findById({id: req.params.id})
+    const task = await Task.findById({_id: req.params.id})
+    .populate('adminId'  , 'name')
+    .populate('techId' , 'name')
     .lean()
     .exec()
 
@@ -62,4 +72,8 @@ export const getAllTasks = async (req ,res) => {
     }
 
     res.status(400).json()
+}
+
+export const getTasksByCategory = async (req , res) => {
+    
 }
