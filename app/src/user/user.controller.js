@@ -188,12 +188,6 @@ export const getTechnicalsByCategory = async (req , res) => {
 
 
 
-
-
-
-
-
-
 /* 
 let token = req.headers.authorization.split('Bearer ')[1];  
 
