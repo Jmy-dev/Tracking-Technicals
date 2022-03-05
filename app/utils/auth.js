@@ -95,6 +95,7 @@ export const protect = async (req , res , next) => {
     }
     
         const payload = await verifyToken(token);
+        console.log(payload);
 
         if(!payload) {            
             return res.status(401).json({error:"Not authorized"});
@@ -104,6 +105,10 @@ export const protect = async (req , res , next) => {
         .select('-password')
         .lean()
         .exec()
+
+        if(!user) {
+            return res.status(400).end()
+        }
   console.log("user here" , user)
         req.user = user;
         next()

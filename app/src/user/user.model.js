@@ -31,8 +31,8 @@ const userSchema = new mongoose.Schema({
         type:String 
     } ,
     category:{
-        type:String ,
-        required:true
+        type: mongoose.Schema.Types.ObjectId ,
+        ref:'category'
     },
     history: [
         {

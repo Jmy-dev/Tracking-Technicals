@@ -1,4 +1,5 @@
 import {User} from './user.model';
+import { Category } from '../category/category.model';
 
 import { verifyToken } from '../../utils/auth';
 
@@ -31,6 +32,38 @@ export const updateUser = async (req , res) =>{
         //EXECUTER 
         const executer = req.user.id;
 
+        if(req.body.category){
+
+            if(req.user.isAdmin) {
+                /*const category = await Category.findByIdAndUpdate({_id: req.body.category} , {$push:{technicals: ownerId}})
+                .lean()
+                .exec()*/
+
+                const category = await Category.findById(req.body.category)
+                .exec()
+                console.log(category)
+                if(!category){
+                    return res.status(400);
+                }
+
+                if(!category.technicals.includes(ownerId)){
+                   
+                    const updatedCategory = await Category.updateOne({_id:category._id},   {$push:{technicals: ownerId}}, {new: true})
+    
+                    if(!updatedCategory) {
+                        return res.status(400)
+                    }
+                }
+               
+                
+               // 
+
+            }else{
+
+                return res.status(401).json({message: "Not authorized"})
+            }
+        }
+
 
         if(req.body.email || req.body.name ) {
             return res.status(400).end()
@@ -61,8 +94,7 @@ export const updateUser = async (req , res) =>{
     }
     catch(e) {
         console.log(e);
-        res.status(400).json({error : e})
-        .end();
+        res.status(400).end();
     }
 }
 
