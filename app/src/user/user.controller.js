@@ -17,7 +17,7 @@ export const getUser = async (req , res) =>{
         if (!user){
             return res.status(400).end();
         }
-        return res.status(200).json({data: user})
+        return res.status(200).json({data:user})
         
     } catch (e) {
         console.error(e) 
@@ -26,6 +26,20 @@ export const getUser = async (req , res) =>{
 }
 
 export const updateUser = async (req , res) =>{
+
+
+
+    /*
+
+ get users's current category 
+
+ if not just proceeed 
+
+ else 
+
+ get category and pop user of and add user to new category
+
+*/
     try {
         //OWNER
         const ownerId = req.params.id;
@@ -35,26 +49,39 @@ export const updateUser = async (req , res) =>{
         if(req.body.category){
 
             if(req.user.isAdmin) {
-                /*const category = await Category.findByIdAndUpdate({_id: req.body.category} , {$push:{technicals: ownerId}})
+
+                //get user 
+                const user = await User.findById(req.params.id)
                 .lean()
-                .exec()*/
-
-                const category = await Category.findById(req.body.category)
                 .exec()
-                console.log(category)
-                if(!category){
-                    return res.status(400);
+                console.log("user a7aaaaaaaaaaaa" ,user)
+
+                if(user.category) {
+                    console.log("here")
+                    console.log(user._id)
+                    const category = await Category.findByIdAndUpdate(user.category ,{$pull:{technicals:user._id}} , {new:true});
+
                 }
 
-                if(!category.technicals.includes(ownerId)){
-                   
-                    const updatedCategory = await Category.updateOne({_id:category._id},   {$push:{technicals: ownerId}}, {new: true})
-    
-                    if(!updatedCategory) {
-                        return res.status(400)
+                    const category = await Category.findById(req.body.category)
+                    .exec()
+                    console.log(category)
+                    if(!category){
+                        return res.status(400).end();
                     }
-                }
-               
+    
+                    if(!category.technicals.includes(ownerId)){
+                       
+                        const updatedCategory = await Category.updateOne({_id:category._id},   {$push:{technicals: ownerId}}, {new: true})
+        
+                        if(!updatedCategory) {
+                            return res.status(400)
+                        }
+                    }
+                
+
+                   
+                    
                 
                // 
 
@@ -76,7 +103,7 @@ export const updateUser = async (req , res) =>{
         
      if(req.user.isAdmin  || (executer === ownerId)) {
         
-        const updatedUser = await User.findOneAndUpdate({id:ownerId} , req.body , {new: true})
+        const updatedUser = await User.findOneAndUpdate({_id:ownerId} , req.body , {new: true})
         .lean()
         .exec()
 
@@ -141,27 +168,27 @@ export const getAllTechnicals = async (req , res) => {
 }
 
 
-export const getTechnicalsByCategory = async (req , res) => {
+// export const getTechnicalsByCategory = async (req , res) => {
 
-    try {
+//     try {
         
     
-    const users = await User.find({category:req.params.name}) 
-    .lean()
-    .exec()
+//     const users = await User.find({category:req.params.id}) 
+//     .lean()
+//     .exec()
 
-    if(users) {
-        return res.status(200).json({users});
-    }
+//     if(users) {
+//         return res.status(200).json({users});
+//     }
 
-    res.status(400).end()
+//     res.status(400).end()
 
-   } 
-    catch (e) {
-        console.error(e);
-        res.status(400).end();
-    }
-}
+//    } 
+//     catch (e) {
+//         console.error(e);
+//         res.status(400).end();
+//     }
+// }
 
 
 
@@ -231,3 +258,6 @@ let token = req.headers.authorization.split('Bearer ')[1];
     
 
 */
+
+
+

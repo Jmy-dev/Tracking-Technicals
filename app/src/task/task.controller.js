@@ -124,6 +124,7 @@ export const getTask = async (req , res) =>{
 export const getAllTasks = async (req ,res) => {
     try {
         const tasks = await Task.find({})
+        .populate('techId')
         .lean()
         .exec()
     

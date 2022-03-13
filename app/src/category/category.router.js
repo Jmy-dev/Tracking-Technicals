@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import {createCategory , getAllCategories , getCategory , updateCategory , deleteCategory} from './category.controller'
+import {createCategory , getAllCategories , getCategory , updateCategory , deleteCategory , getCategoryUsers}  from './category.controller'
 
 const router = Router();
 
@@ -16,7 +16,10 @@ router
 
 
 
-// api/category/:id
+// api/category/users/:id
+
+router.route('/users/:id')
+.get(getCategoryUsers)
 
 //get one
 //put updateone

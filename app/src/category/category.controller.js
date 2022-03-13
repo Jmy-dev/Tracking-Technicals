@@ -113,3 +113,24 @@ export const getAllCategories = async (req ,res) => {
     }
     
 }
+
+
+export const getCategoryUsers = async (req , res) => {
+    try {
+        const technicals = await Category.findById(req.params.id)
+        .select('technicals')
+        .populate('technicals')
+        .lean()
+        .exec()
+
+        if(technicals) {
+            return res.status(200).json(technicals);
+        }
+
+        res.status(400).end();
+        
+    } catch (e) {
+        console.error(e);
+        res.status(400).end()
+    }
+}

@@ -11,7 +11,7 @@ router.get('/technicals' , getAllTechnicals)
 
 // api/user/category /:name
 
-router.get('/category/:name' ,getTechnicalsByCategory )
+//router.get('/category/:name' ,getTechnicalsByCategory )
 
 
 //api/user/me
